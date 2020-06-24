@@ -67,7 +67,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100px;
-  background-color: #84a9ac;
+  background-color: #e7dfd5;
   border-radius: 5px;
   color: #282c34;
   font-weight: bold;
@@ -80,6 +80,7 @@
 .dnd-item:not(:last-of-type) {
   margin-bottom: 0.5rem;
 }
+
 .dnd-item * {
   margin: 0;
   font-size: 1.2rem;
@@ -91,7 +92,7 @@
 }
 
 .dnd-item.empty {
-  background-color: #84a9ac;
+  background-color: #e7dfd5;
 }
 
 .remove {

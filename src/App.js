@@ -35,7 +35,6 @@ const defaultData = addIdsToObjs([
 
 // function App({ storeData }) {
 function App() {
-  // console.log("storeData in app", storeData);
   const [data, setData] = useState();
 
   useEffect(() => {

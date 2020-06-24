@@ -9,7 +9,6 @@ import closeIcon from "../icons/close.png";
 
 function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   const [list, setList] = useState(data);
-  // const [dragging, setDragging] = useState(false);
   const [history, setHistory] = useState(
     JSON.parse(localStorage.getItem("History")) || []
   );
@@ -23,11 +22,8 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   const dragItemNode = useRef();
 
   const handletDragStart = (e, item) => {
-    // e.target.styles.cursor = "pointer";
-    console.log(e.target.className);
-    console.log("Starting to drag");
     // Take screenshot of currentState in case the user decides not to let go of card on o
-    e.dataTransfer.effectAllowed = "copyMove";
+
     dragItemNode.current = e.target;
     dragItemNode.current.addEventListener("dragend", handleDragEnd);
     dragItem.current = item;
@@ -50,18 +46,10 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
         let newList = JSON.parse(JSON.stringify(oldList));
 
         if (dragItem.current.groupIndex === 0) {
-          // newList[targetItem.groupIndex].items[targetItem.card] =
-          //   dragItemNode.current.textContent;\
-
-          // console.log(
-          //   " newList[dragItem.current.groupIndex].items[dragItem.current.card]",
-          //   newList[dragItem.current.groupIndex].items[dragItem.current.card],
-          //   "newList[targetItem.groupIndex].items[targetItem.card]",
-          //   newList[targetItem.groupIndex].items[targetItem.card]
-          // );
-
           newList[targetItem.groupIndex].items[targetItem.card].val =
-            dragItemNode.current.textContent;
+            newList[dragItem.current.groupIndex].items[
+              dragItem.current.card
+            ].val;
 
           // addCard(1, 2);
         } else {
@@ -73,19 +61,6 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
           newList[dragItem.current.groupIndex].items[
             dragItem.current.card
           ].val = "";
-
-          // console.log("should be add and remove");
-          // addAndRemoveCard({
-          //   current: {
-          //     groupIndex: dragItem.current.groupIndex,
-          //     card: dragItem.current.card,
-          //   },
-          //   target: {
-          //     groupIndex: targetItem.groupIndex,
-          //     card: targetItem.card,
-          //   },
-          //   value: dragItemNode.current.textContent,
-          // });
         }
 
         dragItem.current = targetItem;
@@ -101,11 +76,9 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
     dragItemNode.current = null;
 
     // Add to history
-
     let newHistory = history.slice();
     newHistory.push(JSON.parse(JSON.stringify(list)));
     setHistory(newHistory);
-
     localStorage.setItem("History", JSON.stringify(newHistory));
   };
 
@@ -118,6 +91,7 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   };
 
   const handleRemove = ({ groupIndex, card }) => {
+    // Remove from history
     let newHistory = history.slice();
     newHistory.push(JSON.parse(JSON.stringify(list)));
     setHistory(newHistory);
@@ -126,7 +100,7 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
     setList((oldList) => {
       let newList = JSON.parse(JSON.stringify(oldList));
       newList[groupIndex].items[card].val = "";
-
+      // Add to local storage
       localStorage.setItem("List", JSON.stringify(newList));
 
       return newList;
@@ -166,11 +140,6 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
             <div
               id={groupIndex}
               key={groupIndex}
-              // onDragEnter={
-              //   dragging && !group.items.length
-              //     ? (e) => handleDragEnter(e, { groupIndex, card: 0 })
-              //     : null
-              // }
               className="dnd-group"
             >
               {group.items.map(({ id, val: item }, card) => (
