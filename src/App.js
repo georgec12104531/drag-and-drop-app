@@ -27,10 +27,12 @@ const addIdsToObjs = (data) => {
 };
 
 const defaultData = addIdsToObjs([
-  { title: "rewards", items: ["", "R1", "R2", "R3", "R4", "R5", "R6"] },
-  { title: "category 1", items: ["C1", "", "", "", "", "", ""] },
-  { title: "category 2", items: ["C2", "", "", "", "", "", ""] },
-  { title: "category 3", items: ["C3", "", "", "", "", "", ""] },
+  { title: "rewards", items: ["", "R1", "R2", "R3", "R4", "R5"] },
+  { title: "category 1", items: ["C1", "", "", "", "", ""] },
+  { title: "category 2", items: ["C2", "", "", "", "", ""] },
+  { title: "category 3", items: ["C3", "", "", "", "", ""] },
+  { title: "category 4", items: ["C4", "", "", "", "", ""] },
+  { title: "category 4", items: ["C5", "", "", "", "", ""] },
 ]);
 
 // function App({ storeData }) {
