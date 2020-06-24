@@ -3,7 +3,7 @@ import "./App.css";
 
 // import { connect } from "react-redux";
 
-import DragNDrop from "./components/DragNDrop";
+import DrapDrop from "./components/drag-drop.component.";
 
 let counter = 0;
 
@@ -49,7 +49,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <DragNDrop data={data} />
+        <DrapDrop data={data} />
       </header>
     </div>
   );

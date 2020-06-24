@@ -7,7 +7,7 @@ import closeIcon from "../icons/close.png";
 // } from "../redux/category-reducer/category.actions";
 // import { connect } from "react-redux";
 
-function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
+function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   const [list, setList] = useState(data);
   const [history, setHistory] = useState(
     JSON.parse(localStorage.getItem("History")) || []
@@ -22,29 +22,23 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   const dragItemNode = useRef();
 
   const handletDragStart = (e, item) => {
-    // Take screenshot of currentState in case the user decides not to let go of card on o
-
     dragItemNode.current = e.target;
     dragItemNode.current.addEventListener("dragend", handleDragEnd);
     dragItem.current = item;
-
-    // setTimeout(() => {
-    //   setDragging(true);
-    // }, 0);
   };
   const handleDragEnter = (e, targetItem) => {
-    // Check to see that item is part of the reward column
-    // if it is, we are adding a new card into the the system
-    e.dataTransfer.dropEffect = "copy";
+    if (!dragItem.current) return;
     if (
+      list[dragItem.current.groupIndex].items[dragItem.current.card].val !==
+        "" &&
       dragItem.current.card === targetItem.card &&
       list[targetItem.groupIndex].items[targetItem.card].val !==
         list[dragItem.current.groupIndex].items[dragItem.current.card].val
     ) {
-      //   console.log("Moving to another category not the same as dragged item");
       setList((oldList) => {
         let newList = JSON.parse(JSON.stringify(oldList));
-
+        // Check to see that item is part of the reward column
+        // if it is, we are adding a new card into the the system
         if (dragItem.current.groupIndex === 0) {
           newList[targetItem.groupIndex].items[targetItem.card].val =
             newList[dragItem.current.groupIndex].items[
@@ -70,14 +64,15 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
     }
   };
   const handleDragEnd = (e) => {
-    // setDragging(false);
     dragItem.current = null;
     dragItemNode.current.removeEventListener("dragend", handleDragEnd);
     dragItemNode.current = null;
 
     // Add to history
+
     let newHistory = history.slice();
-    newHistory.push(JSON.parse(JSON.stringify(list)));
+
+    newHistory.push(list);
     setHistory(newHistory);
     localStorage.setItem("History", JSON.stringify(newHistory));
   };
@@ -100,7 +95,7 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
     setList((oldList) => {
       let newList = JSON.parse(JSON.stringify(oldList));
       newList[groupIndex].items[card].val = "";
-      // Add to local storage
+      // Add to Local Storage
       localStorage.setItem("List", JSON.stringify(newList));
 
       return newList;
@@ -137,20 +132,13 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
         <div className="drag-n-drop">
           {/* Loop through all groups then then each group */}
           {list.map((group, groupIndex) => (
-            <div
-              id={groupIndex}
-              key={groupIndex}
-              className="dnd-group"
-            >
+            <div id={groupIndex} key={groupIndex} className="dnd-group">
               {group.items.map(({ id, val: item }, card) => (
                 <div
                   id={`${groupIndex}_${card}`}
                   // This makes the first row, which are the categories not dragable
                   draggable={card !== 0 && item !== ""}
                   key={id}
-                  onClick={() => {
-                    console.log(item);
-                  }}
                   onDragStart={
                     item !== ""
                       ? (e) =>
@@ -160,7 +148,6 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
                           })
                       : null
                   }
-                  // onDrop={handleDragEnd}
                   onDragEnter={(e) => handleDragEnter(e, { groupIndex, card })}
                   className={getStyles(item)}
                 >
@@ -196,4 +183,4 @@ function DragNDrop({ data, addCard, addAndRemoveCard, removeCard }) {
 // });
 
 // export default connect(null, mapDispatchToProps)(DragNDrop);
-export default DragNDrop;
+export default DrapDrop;
