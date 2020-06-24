@@ -86,13 +86,14 @@ describe("Drag and drop test", () => {
         cy.get("#2_3").trigger("dragstart");
         cy.get("#3_3").trigger("dragenter");
         cy.get("#3_3 .remove").click();
-        cy.get(".undo-button").click();
+        cy.get("button.undo-button").click({ force: true });
 
         cy.get("#3_3")
           .invoke("text")
           .should((text2) => {
             expect(text).to.eq(text2);
           });
+        cy.get("button.undo-button").wait(200).click();
       });
   });
 });
