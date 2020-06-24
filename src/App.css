@@ -1,5 +1,5 @@
 .App-header {
-  background-color: #282c34;
+  background-color: #204051;
   min-height: 100vh;
   display: flex;
   /* flex-direction: column;
@@ -7,6 +7,22 @@
   justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+
+.header {
+  padding: 0.5rem;
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(auto-fill, 200px);
+  align-items: start;
 }
 
 .drag-n-drop {
@@ -19,13 +35,14 @@
   align-items: start;
 }
 .dnd-group {
-  background-color: #49505e;
+  background-color: #3b6978;
   border-radius: 5px;
   padding: 0.5rem;
   height: 100px;
   height: 750px;
 }
-.dnd-item {
+
+.row-item {
   display: flex;
   position: relative;
   justify-content: center;
@@ -35,7 +52,31 @@
   border-radius: 5px;
   color: #282c34;
   font-weight: bold;
+  margin: 11px;
+  width: 186px;
 }
+
+.dnd-row {
+  margin-left: 213px;
+  display: flex;
+}
+
+.dnd-item {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  background-color: #84a9ac;
+  border-radius: 5px;
+  color: #282c34;
+  font-weight: bold;
+}
+
+.dnd-item:active {
+  cursor: pointer;
+}
+
 .dnd-item:not(:last-of-type) {
   margin-bottom: 0.5rem;
 }
@@ -50,7 +91,7 @@
 }
 
 .dnd-item.empty {
-  background-color: #282c34;
+  background-color: #84a9ac;
 }
 
 .remove {

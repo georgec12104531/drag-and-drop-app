@@ -1,16 +1,37 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 
 import DragNDrop from "./components/DragNDrop";
 
-const defaultData = [
+let counter = 0;
+
+const generateKey = () => {
+  counter++;
+  return `${counter}_${new Date().getTime()}`;
+};
+
+const addIdsToObjs = (data) => {
+  return data.map((group) => {
+    return {
+      ...group,
+      items: group.items.map((item) => {
+        return {
+          id: generateKey(),
+          val: item,
+        };
+      }),
+    };
+  });
+};
+
+const defaultData = addIdsToObjs([
   { title: "rewards", items: ["", "R1", "R2", "R3", "R4", "R5", "R6"] },
   { title: "category 1", items: ["C1", "", "", "", "", "", ""] },
   { title: "category 2", items: ["C2", "", "", "", "", "", ""] },
   { title: "category 3", items: ["C3", "", "", "", "", "", ""] },
-];
+]);
 
 // function App({ storeData }) {
 function App() {
