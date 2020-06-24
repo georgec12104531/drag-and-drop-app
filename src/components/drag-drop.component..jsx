@@ -28,33 +28,33 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   };
   const handleDragEnter = (e, targetItem) => {
     if (!dragItem.current) return;
+
+    const {
+      current: { groupIndex: dragGroupIndex, itemIndex: dragCard },
+    } = dragItem;
+
+    const { groupIndex: targetGroupIndex, itemIndex: targetCard } = targetItem;
+
     if (
-      list[dragItem.current.groupIndex].items[dragItem.current.card].val !==
-        "" &&
-      dragItem.current.card === targetItem.card &&
-      list[targetItem.groupIndex].items[targetItem.card].val !==
-        list[dragItem.current.groupIndex].items[dragItem.current.card].val
+      list[dragGroupIndex].items[dragCard].val !== "" &&
+      dragCard === targetCard &&
+      list[targetGroupIndex].items[targetCard].val !==
+        list[dragGroupIndex].items[dragCard].val
     ) {
       setList((oldList) => {
         let newList = JSON.parse(JSON.stringify(oldList));
         // Check to see that item is part of the reward column
-        // if it is, we are adding a new card into the the system
+        // if it is, we are adding a new itemIndex into the the system
         if (dragItem.current.groupIndex === 0) {
-          newList[targetItem.groupIndex].items[targetItem.card].val =
-            newList[dragItem.current.groupIndex].items[
-              dragItem.current.card
-            ].val;
+          newList[targetGroupIndex].items[targetCard].val =
+            newList[dragGroupIndex].items[dragCard].val;
 
           // addCard(1, 2);
         } else {
-          newList[targetItem.groupIndex].items[targetItem.card].val =
-            newList[dragItem.current.groupIndex].items[
-              dragItem.current.card
-            ].val;
+          newList[targetGroupIndex].items[targetCard].val =
+            newList[dragGroupIndex].items[dragCard].val;
 
-          newList[dragItem.current.groupIndex].items[
-            dragItem.current.card
-          ].val = "";
+          newList[dragGroupIndex].items[dragCard].val = "";
         }
 
         dragItem.current = targetItem;
@@ -85,7 +85,7 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
     }
   };
 
-  const handleRemove = ({ groupIndex, card }) => {
+  const handleRemove = ({ groupIndex, itemIndex }) => {
     // Remove from history
     let newHistory = history.slice();
     newHistory.push(JSON.parse(JSON.stringify(list)));
@@ -94,7 +94,7 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
 
     setList((oldList) => {
       let newList = JSON.parse(JSON.stringify(oldList));
-      newList[groupIndex].items[card].val = "";
+      newList[groupIndex].items[itemIndex].val = "";
       // Add to Local Storage
       localStorage.setItem("List", JSON.stringify(newList));
 
@@ -109,12 +109,12 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
       let prev = historyCopy.pop();
       setHistory(historyCopy);
       setList(prev);
+      // Add new list to Local Storage
       localStorage.setItem("List", JSON.stringify(prev));
 
-      // Remove from Local Storage
+      // Pop last list from Local Storage history stack
       let newHistory = JSON.parse(localStorage.getItem("History"));
       newHistory.pop();
-
       localStorage.setItem("History", JSON.stringify(newHistory));
     }
   };
@@ -122,44 +122,40 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   if (list) {
     return (
       <div className="main-container">
-        {/* <div className="dnd-row">
-          {["C1", "C2", "C3"].map((item, index) => (
-            <div className="row-item" key={generateKey(item)}>
-              {item}
-            </div>
-          ))}
-        </div> */}
         <div className="drag-n-drop">
           {/* Loop through all groups then then each group */}
           {list.map((group, groupIndex) => (
             <div id={groupIndex} key={groupIndex} className="dnd-group">
-              {group.items.map(({ id, val: item }, card) => (
+              {group.items.map(({ id, val }, itemIndex) => (
                 <div
-                  id={`${groupIndex}_${card}`}
-                  // This makes the first row, which are the categories not dragable
-                  draggable={card !== 0 && item !== ""}
+                  id={`${groupIndex}_${itemIndex}`}
+                  // This makes the first row, which are the categories, not dragable
+                  draggable={itemIndex !== 0 && val !== ""}
                   key={id}
                   onDragStart={
-                    item !== ""
+                    val !== ""
                       ? (e) =>
                           handletDragStart(e, {
-                            groupIndex: groupIndex,
-                            card: card,
+                            groupIndex,
+                            itemIndex,
                           })
                       : null
                   }
-                  onDragEnter={(e) => handleDragEnter(e, { groupIndex, card })}
-                  className={getStyles(item)}
+                  onDragEnter={(e) =>
+                    handleDragEnter(e, { groupIndex, itemIndex })
+                  }
+                  className={getStyles(val)}
                 >
-                  {item !== "" && groupIndex !== 0 && card !== 0 ? (
+                  {/* Cards that are empty, and cards on the first column and on the first row can't be moved */}
+                  {val !== "" && groupIndex !== 0 && itemIndex !== 0 ? (
                     <img
-                      onClick={() => handleRemove({ groupIndex, card })}
+                      onClick={() => handleRemove({ groupIndex, itemIndex })}
                       src={closeIcon}
                       className="remove"
                       alt="close"
                     ></img>
                   ) : null}
-                  <div>{item}</div>
+                  <div>{val}</div>
                 </div>
               ))}
             </div>

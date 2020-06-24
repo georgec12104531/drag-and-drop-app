@@ -2,17 +2,14 @@
   background-color: #204051;
   min-height: 100vh;
   display: flex;
-  /* flex-direction: column;
-  align-items: center;
-  justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
 .main-container {
   display: flex;
-  flex-direction: column;
   width: 100vw;
+  margin: 20px;
 }
 
 .header {
@@ -105,6 +102,16 @@
 }
 
 .undo-button {
-  height: 50px;
-  width: 100px;
+  height: 81px;
+  border-radius: 50px;
+  width: 81px;
+  font-size: 1.2rem;
+  border: 5px solid #3b6978;
+  color: #282c34;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 132px;
+  margin: 48px;
+  background-color: #e7dfd5;
+  outline: none;
 }

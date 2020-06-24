@@ -93,7 +93,7 @@ describe("Drag and drop test", () => {
           .should((text2) => {
             expect(text).to.eq(text2);
           });
-        cy.get("button.undo-button").wait(200).click();
+        cy.get("button.undo-button").click();
       });
   });
 });
