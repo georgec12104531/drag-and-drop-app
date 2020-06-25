@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 
 import DrapDrop from "./components/drag-drop.component.";
 
@@ -26,27 +26,21 @@ const addIdsToObjs = (data) => {
   });
 };
 
-const defaultData = addIdsToObjs([
-  { title: "rewards", items: ["", "R1", "R2", "R3", "R4", "R5"] },
-  { title: "category 1", items: ["C1", "", "", "", "", ""] },
-  { title: "category 2", items: ["C2", "", "", "", "", ""] },
-  { title: "category 3", items: ["C3", "", "", "", "", ""] },
-  { title: "category 4", items: ["C4", "", "", "", "", ""] },
-  { title: "category 4", items: ["C5", "", "", "", "", ""] },
-]);
-
-// function App({ storeData }) {
-function App() {
+function App({ storeData }) {
+  // function App() {
   const [data, setData] = useState();
+
+  // console.log("storeData inside app", storeD);
 
   useEffect(() => {
     if (localStorage.getItem("List")) {
-      console.log("getting from local storage on refresh");
-      setData(JSON.parse(localStorage.getItem("List")));
+      let localStorageData = JSON.parse(localStorage.getItem("List"));
+      setData(localStorageData);
     } else {
-      setData(defaultData);
+      // console.log(JSON.stringify(addIdsToObjs(storeData)));
+      setData(storeData);
     }
-  }, [setData]);
+  }, [setData, storeData]);
 
   return (
     <div className="App">
@@ -57,10 +51,10 @@ function App() {
   );
 }
 
-// const mapStateToProps = (state) => ({
-//   storeData: state.category.storeData,
-// });
+const mapStateToProps = (state) => ({
+  storeData: state.category.storeData,
+});
 
-// export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, null)(App);
 
-export default App;
+// export default App;

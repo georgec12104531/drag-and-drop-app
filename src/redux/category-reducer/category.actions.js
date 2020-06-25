@@ -1,8 +1,8 @@
 import CategoryTypes from "./category.types";
 
-export const addCard = (item1, item2) => ({
-  type: CategoryTypes.ADD_CARD,
-  category: { item1, item2 },
+export const addReward = (items) => ({
+  type: CategoryTypes.ADD_REWARD,
+  items,
 });
 
 export const addAndRemoveCard = ({ current, target, value }) => ({

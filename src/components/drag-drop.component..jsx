@@ -1,20 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import closeIcon from "../icons/close.png";
-// import {
-//   addCard,
-//   addAndRemoveCard,
-//   removeCard,
-// } from "../redux/category-reducer/category.actions";
-// import { connect } from "react-redux";
+import {
+  addReward,
+  addAndRemoveCard,
+  removeCard,
+} from "../redux/category-reducer/category.actions";
+import { connect } from "react-redux";
 
-function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
+function DrapDrop({ data, addReward, addAndRemoveCard, removeCard }) {
   const [list, setList] = useState(data);
   const [history, setHistory] = useState(
     JSON.parse(localStorage.getItem("History")) || []
   );
 
   useEffect(() => {
-    console.log("use effect data", data);
     setList(data);
   }, [setList, data]);
 
@@ -52,6 +51,7 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
         if (dragGroupIndex === 0) {
           newList[targetGroupIndex].items[targetCard].val =
             newList[dragGroupIndex].items[dragCard].val;
+          // addReward({ targetGroupIndex, targetCard, dragGroupIndex, dragCard });
         } else {
           newList[targetGroupIndex].items[targetCard].val =
             newList[dragGroupIndex].items[dragCard].val;
@@ -166,12 +166,12 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   }
 }
 
-// const mapDispatchToProps = (dispatch) => ({
-//   addCard: (item1, item2) => dispatch(addCard(item1, item2)),
-//   addAndRemoveCard: (current, target, value) =>
-//     dispatch(addAndRemoveCard(current, target, value)),
-//   removeCard: (groupIndex, card) => dispatch(removeCard(groupIndex, card)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  addReward: (items) => dispatch(addReward(items)),
+  addAndRemoveCard: (current, target, value) =>
+    dispatch(addAndRemoveCard(current, target, value)),
+  removeCard: (groupIndex, card) => dispatch(removeCard(groupIndex, card)),
+});
 
-// export default connect(null, mapDispatchToProps)(DragNDrop);
-export default DrapDrop;
+export default connect(null, mapDispatchToProps)(DrapDrop);
+// export default DrapDrop;
