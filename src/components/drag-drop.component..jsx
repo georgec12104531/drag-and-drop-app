@@ -98,7 +98,6 @@ function DrapDrop({ data, addReward, addAndRemoveCard, removeCard }) {
 
   const handleUndo = () => {
     if (history.length) {
-      // Take from local storage
       let historyCopy = history.slice();
       let prev = historyCopy.pop();
       setHistory(historyCopy);
@@ -174,4 +173,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(DrapDrop);
-// export default DrapDrop;

@@ -26,14 +26,7 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
       return { storeData: newState };
       break;
     case ADD_AND_REMOVE_CARD:
-      console.log("action", action);
-      const {
-        category: { current, target, value },
-      } = action;
-      console.log(current, target, value);
-      newState = state.storeData.slice();
-      return { storeData: newState };
-
+      break;
     default:
       return state;
   }

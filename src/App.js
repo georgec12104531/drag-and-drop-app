@@ -5,32 +5,9 @@ import { connect } from "react-redux";
 
 import DrapDrop from "./components/drag-drop.component.";
 
-let counter = 0;
-
-const generateKey = () => {
-  counter++;
-  return `${counter}_${new Date().getTime()}`;
-};
-
-const addIdsToObjs = (data) => {
-  return data.map((group) => {
-    return {
-      ...group,
-      items: group.items.map((item) => {
-        return {
-          id: generateKey(),
-          val: item,
-        };
-      }),
-    };
-  });
-};
-
 function App({ storeData }) {
   // function App() {
   const [data, setData] = useState();
-
-  // console.log("storeData inside app", storeD);
 
   useEffect(() => {
     if (localStorage.getItem("List")) {
@@ -56,5 +33,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, null)(App);
-
-// export default App;
