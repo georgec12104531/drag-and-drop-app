@@ -24,6 +24,11 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   const handletDragStart = (e, item) => {
     dragItemNode.current = e.target;
     dragItem.current = item;
+    let newHistory = history.slice();
+
+    newHistory.push(list);
+    setHistory(newHistory);
+    localStorage.setItem("History", JSON.stringify(newHistory));
   };
   const handleDragEnter = (e, targetItem) => {
     if (!dragItem.current) return;
@@ -44,11 +49,9 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
         let newList = JSON.parse(JSON.stringify(oldList));
         // Check to see that item is part of the reward column
         // if it is, we are adding a new itemIndex into the the system
-        if (dragItem.current.groupIndex === 0) {
+        if (dragGroupIndex === 0) {
           newList[targetGroupIndex].items[targetCard].val =
             newList[dragGroupIndex].items[dragCard].val;
-
-          // addCard(1, 2);
         } else {
           newList[targetGroupIndex].items[targetCard].val =
             newList[dragGroupIndex].items[dragCard].val;
@@ -65,14 +68,7 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   const handleDragEnd = (e) => {
     dragItem.current = null;
     dragItemNode.current = null;
-
     // Add to history
-    let newHistory = history.slice();
-
-    newHistory.push(list);
-    setHistory(newHistory);
-    console.log("history after push", newHistory);
-    localStorage.setItem("History", JSON.stringify(newHistory));
   };
 
   const getStyles = (item) => {
