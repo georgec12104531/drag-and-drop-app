@@ -23,7 +23,6 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
 
   const handletDragStart = (e, item) => {
     dragItemNode.current = e.target;
-    dragItemNode.current.addEventListener("dragend", handleDragEnd);
     dragItem.current = item;
   };
   const handleDragEnter = (e, targetItem) => {
@@ -65,15 +64,14 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
   };
   const handleDragEnd = (e) => {
     dragItem.current = null;
-    dragItemNode.current.removeEventListener("dragend", handleDragEnd);
     dragItemNode.current = null;
 
     // Add to history
-
     let newHistory = history.slice();
 
     newHistory.push(list);
     setHistory(newHistory);
+    console.log("history after push", newHistory);
     localStorage.setItem("History", JSON.stringify(newHistory));
   };
 
@@ -144,6 +142,7 @@ function DrapDrop({ data, addCard, addAndRemoveCard, removeCard }) {
                   onDragEnter={(e) =>
                     handleDragEnter(e, { groupIndex, itemIndex })
                   }
+                  onDragEnd={handleDragEnd}
                   className={getStyles(val)}
                 >
                   {/* Cards that are empty, and cards on the first column and on the first row can't be moved */}
